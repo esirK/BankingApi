@@ -1,0 +1,29 @@
+language: python
+
+python:
+  - "3.6"
+
+service:
+  - postgresql
+
+addons:
+  postgresql: '9.4'
+
+install:
+  - pip install pipenv
+  - pipenv install
+  - pipenv install coverage
+  - pipenv install coveralls
+
+before_script:
+  - export DB_NAME="banking"
+  - psql -c 'create database banking;' -U postgres
+  - python manage.py makemigrations
+  - python manage.py migrate
+
+script:
+  - coverage run --source='.' ./manage.py test
+  - coverage report
+
+after_script:
+  - coveralls
