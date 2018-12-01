@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 django = "*"
 "psycopg2" = "*"
+ipdb = "*"
+django-extensions = "*"
 
 [dev-packages]
 
