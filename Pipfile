@@ -9,6 +9,7 @@ django = "*"
 ipdb = "*"
 django-extensions = "*"
 djangorestframework = "*"
+pyjwt = "*"
 
 [dev-packages]
 
