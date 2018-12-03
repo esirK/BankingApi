@@ -91,7 +91,7 @@ If the request is successful, the user details will be returned.
 Required fields: `email`, `confirm_email`, `username`, `password`
 
 ##### Note
-The registered user will have to change their account password once they are logged in the first time.
+The registered user will have to change their accounts password once they are logged in the first time.
 
 ### Login:
 
