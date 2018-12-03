@@ -1,5 +1,6 @@
 # BankingApi
 [![Build Status](https://travis-ci.org/esirK/BankingApi.svg?branch=develop)](https://travis-ci.org/esirK/BankingApi)
+[![Coverage Status](https://coveralls.io/repos/github/esirK/BankingApi/badge.svg?branch=develop)](https://coveralls.io/github/esirK/BankingApi?branch=develop)
 
 Allows different users(Managers, Bank Tellers, and Customers) to perform different bank activities from an API
 
