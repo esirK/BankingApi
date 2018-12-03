@@ -102,8 +102,6 @@ class User(AbstractUser):
                 "id": self.id,
                 "username": self.username,
                 "email": self.email,
-                "iat": datetime.utcnow(),
-                "exp": datetime.utcnow() + timedelta(minutes=int(os.getenv('TIME_DELTA')))
             },
             settings.SECRET_KEY, algorithm='HS256').decode()
         return token
