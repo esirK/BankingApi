@@ -31,6 +31,24 @@ class CustomManager(BaseUserManager):
 
         return self._create_user(**fields)
 
+    def create_manager(self, **fields):
+        fields.setdefault('is_manager', True)
+        fields.setdefault('is_staff', True)
+
+        return self._create_user(**fields)
+
+    def create_teller(self, **fields):
+        fields.setdefault('is_teller', True)
+        fields.setdefault('is_staff', True)
+
+        return self._create_user(**fields)
+
+    def create_customer(self, **fields):
+        fields.setdefault('is_customer', True)
+
+        return self._create_user(**fields)
+
+
 class User(AbstractUser):
     objects = CustomManager()
     email = models.EmailField(max_length=50, unique=True)
