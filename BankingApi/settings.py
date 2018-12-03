@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     #pip installed apps
     'django_extensions',
+    'rest_framework',
+
     #local apps
     'accounts',
 ]
