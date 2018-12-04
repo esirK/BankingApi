@@ -10,6 +10,7 @@ ipdb = "*"
 django-extensions = "*"
 djangorestframework = "*"
 pyjwt = "*"
+django-rest-swagger = "*"
 
 [dev-packages]
 

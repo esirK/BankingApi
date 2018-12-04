@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from django.contrib.auth import authenticate
+
 
 
 User = get_user_model()
@@ -39,3 +41,19 @@ class CustomerSerializer(UserSerializer):
     def to_representation(self, instance):
         instance.pop('password')
         return instance
+
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(allow_null=False, allow_blank=False,
+                                   help_text="Email required to login")
+    password = serializers.CharField(min_length=8, write_only=True)
+
+    def validate(self, data):
+        user = authenticate(username=data.get('email'), password=data.get('password'))
+        if user:
+            return {
+                'email': user.email,
+                'username': user.username,
+                'token': user.token
+            }
+        raise serializers.ValidationError({"error": "Invalid credentials Were Provided"})

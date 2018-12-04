@@ -10,8 +10,8 @@ class TestUserModel(TestCase):
             password='199407'
         )
 
-    def test_users_are_inactive_on_creation(self):
-        self.assertFalse(self.default_user.is_active)
+    def test_users_are_deactivated_on_creation(self):
+        self.assertFalse(self.default_user.is_activated)
 
     def test_create_manager_command(self):
         manager = User.objects.create_manager(
