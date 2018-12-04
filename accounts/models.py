@@ -1,6 +1,3 @@
-import os
-from datetime import datetime, timedelta
-
 import jwt
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
@@ -58,8 +55,11 @@ class User(AbstractUser):
     objects = CustomManager()
     email = models.EmailField(max_length=50, unique=True)
 
-    is_active = models.BooleanField(
-        'active',
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
+    is_activated = models.BooleanField(
+        'is_activated',
         default=False,
         help_text= (
             'All Users are inactive by default.'
@@ -88,7 +88,6 @@ class User(AbstractUser):
             'Customers can have accounts with the bank.'
         )
     )
-    REQUIRED_FIELDS = ['email']
 
     @property
     def token(self):
