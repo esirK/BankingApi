@@ -4,6 +4,8 @@ from rest_framework.reverse import reverse
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 
+from accounts.models import CustomerBankAccount
+
 User = get_user_model()
 client = APIClient()
 
@@ -67,7 +69,7 @@ class TestUserRegistrationAPI(TestCase):
         self.assertEqual(201, response.status_code)
 
 
-    def testManagers_can_create_new_tellers(self):
+    def test_managers_can_create_new_tellers(self):
         data = self.data
         data['username'] = "Teller3"
         data['email'] = "teller3@teller.com"
@@ -80,3 +82,15 @@ class TestUserRegistrationAPI(TestCase):
         self.assertEqual(count + 1, User.objects.count())
         self.assertTrue(User.objects.last().is_teller)
         self.assertEqual(201, response.status_code)
+
+    def test_bank_accounts_are_created_once_a_customer_is_registered(self):
+        data = self.data
+        data['username'] = "Customer3"
+        data['email'] = "customer3@customer.com"
+
+        count = CustomerBankAccount.objects.count()
+        client.post(self.registration_url,
+                               HTTP_AUTHORIZATION="Token {}".format(self.teller1.token),
+                               data=data)
+
+        self.assertEqual(count + 1, CustomerBankAccount.objects.count())
