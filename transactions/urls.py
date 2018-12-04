@@ -1,10 +1,10 @@
 from django.urls import path
 
-from .views import (TransactionsAPIView)
+from .views import (TopUpAPIView)
 
 
 app_name = 'transactions'
 
 urlpatterns = [
-    path('transact/', TransactionsAPIView.as_view(), name='transact'),
+    path('transact/', TopUpAPIView.as_view(), name='topup'),
 ]
