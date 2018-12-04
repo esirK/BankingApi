@@ -11,6 +11,9 @@ django-extensions = "*"
 djangorestframework = "*"
 pyjwt = "*"
 django-rest-swagger = "*"
+gunicorn = "*"
+whitenoise = "*"
+dj-database-url = "*"
 
 [dev-packages]
 
