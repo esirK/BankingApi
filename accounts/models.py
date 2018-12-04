@@ -104,3 +104,11 @@ class User(AbstractUser):
             },
             settings.SECRET_KEY, algorithm='HS256').decode()
         return token
+
+
+class CustomerBankAccount(models.Model):
+    owner = models.ForeignKey('User', related_name='bank_accounts', on_delete=models.PROTECT)
+    balance = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return "{} Bank account. ".format(self.owner.username)

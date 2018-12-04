@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 
-
+from accounts.models import CustomerBankAccount
 
 User = get_user_model()
 
@@ -35,7 +35,10 @@ class TellerSerializer(UserSerializer):
 class CustomerSerializer(UserSerializer):
     def create(self, validated_data):
         validated_data.pop('confirm_password')
-        User.objects.create_customer(**validated_data)
+        user = User.objects.create_customer(**validated_data)
+        account = CustomerBankAccount()
+        account.owner = user
+        account.save()
         return validated_data
 
     def to_representation(self, instance):
