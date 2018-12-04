@@ -1,3 +1,8 @@
+import os
+from datetime import datetime, timedelta
+
+import jwt
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 
@@ -84,3 +89,19 @@ class User(AbstractUser):
         )
     )
     REQUIRED_FIELDS = ['email']
+
+    @property
+    def token(self):
+        """
+        Generates the token and allows the token
+        to be called by `user.token`
+        :return string
+        """
+        token = jwt.encode(
+            {
+                "id": self.id,
+                "username": self.username,
+                "email": self.email,
+            },
+            settings.SECRET_KEY, algorithm='HS256').decode()
+        return token
