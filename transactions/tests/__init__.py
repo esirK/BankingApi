@@ -34,6 +34,7 @@ class BaseTestCase(TestCase):
         #URLS
         cls.top_up_url = reverse('transactions:topup')
         cls.withdraw_url = reverse('transactions:withdraw')
+        cls.transfer_url = reverse('transactions:transfer')
 
     @classmethod
     def tearDownClass(cls):
