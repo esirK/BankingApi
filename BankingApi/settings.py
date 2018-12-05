@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
     #local apps
     'accounts',
+    'transactions'
 ]
 
 MIDDLEWARE = [
@@ -131,6 +132,7 @@ STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'accounts.backends.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
 }
 
