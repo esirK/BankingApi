@@ -1,45 +1,22 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase
 from rest_framework import status
-from rest_framework.reverse import reverse
-from rest_framework.test import APIClient
 
 from accounts.models import CustomerBankAccount
 
 User = get_user_model()
-client = APIClient()
 
+from . import BaseTestCase
 
-class TestTopUpTransaction(TestCase):
-    def setUp(self):
-        self.top_up_url = reverse('transactions:topup')
-        self.teller = User.objects.create_teller(
-            username="Teller",
-            email="teller@teller.com",
-            password="Teller9407#"
-        )
-        self.customer = User.objects.create_customer(
-            username="Customer",
-            email="customer@customer.com",
-            password="Customer19407#"
-        )
-        self.customer_account = CustomerBankAccount.objects.create(owner=self.customer)
-
-        self.data = {
-                "type": "TOP_UP",
-                "amount": 1000,
-                "performed_on": self.customer_account.id
-        }
-
+class TestTopUpTransaction(BaseTestCase):
     def test_non_logged_in_user_cannot_perform_a_transaction(self):
-        response = client.post(self.top_up_url, data=self.data)
+        response = self.client.post(self.top_up_url, data=self.data)
         self.assertEqual(response.data, {
             'detail': 'Authentication credentials were not provided.'
         })
         self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
     def test_un_activated_authenticated_staff_users_cannot_perform_a_transaction(self):
-        response = client.post(self.top_up_url,
+        response = self.client.post(self.top_up_url,
                                data=self.data,
                                HTTP_AUTHORIZATION="Token {}".format(self.teller.token))
 
@@ -62,7 +39,7 @@ class TestTopUpTransaction(TestCase):
         customer.save()
 
         token = customer.token
-        response = client.post(self.top_up_url,
+        response = self.client.post(self.top_up_url,
                                data=self.data,
                                HTTP_AUTHORIZATION="Token {}".format(token))
         self.assertEqual(response.data, {
@@ -79,11 +56,10 @@ class TestTopUpTransaction(TestCase):
         teller.is_activated = True
         teller.save()
 
-        response = client.post(self.top_up_url,
+        response = self.client.post(self.top_up_url,
                                data=self.data,
                                HTTP_AUTHORIZATION="Token {}".format(teller.token))
         account_balance = CustomerBankAccount.objects.get(owner=self.customer).balance
 
         self.assertEqual(account_balance, self.customer_account.balance + int(self.data.get('amount')))
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
-
