@@ -10,3 +10,14 @@ class IsAdminAndActivated(BasePermission):
         if not user or not user.is_authenticated:
             return False
         return user.is_activated and user.is_staff
+
+
+class IsAuthenticatedAndActivated(BasePermission):
+    """
+        Allows access only to authenticated and activated users.
+    """
+    def has_permission(self, request, view):
+        user = request.user
+        if not user or not user.is_authenticated:
+            return False
+        return user.is_activated
