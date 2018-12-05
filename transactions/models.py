@@ -9,6 +9,7 @@ STATUS_TYPES = (('SUCCESS','success'), ('FAILURE', 'failure'), ('PENDING', 'pend
 class Transaction(models.Model):
     type = models.CharField(max_length=150, choices=TRANSACTION_TYPES)
     performed_by = models.ForeignKey(User, related_name='transactions', on_delete=models.PROTECT, null=False)
+    transfer_to = models.ForeignKey('accounts.CustomerBankAccount', related_name='transfers', on_delete=models.PROTECT, null=True)
     performed_on = models.ForeignKey('accounts.CustomerBankAccount', related_name='account_transactions', on_delete=models.PROTECT, null=False)
     amount = models.FloatField()
     status = models.CharField(max_length=150, choices=STATUS_TYPES)
