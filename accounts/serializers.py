@@ -60,3 +60,9 @@ class LoginSerializer(serializers.Serializer):
                 'token': user.token
             }
         raise serializers.ValidationError({"error": "Invalid credentials Were Provided"})
+
+
+class UsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('pk','username', 'email', 'is_activated', 'date_joined', 'last_login',)

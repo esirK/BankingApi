@@ -1,11 +1,13 @@
 from django.contrib.auth import get_user_model
-from rest_framework import generics, status
+from rest_framework import generics, status, mixins
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 from accounts.serializers import (TellerSerializer,
                                   CustomerSerializer,
-                                  LoginSerializer)
+                                  LoginSerializer,
+                                  UsersSerializer)
+from transactions.permissions import IsAdminAndActivated
 
 User = get_user_model()
 
@@ -32,3 +34,13 @@ class UserLoginAPIView(generics.CreateAPIView):
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 
+class AllUsersAPIView(mixins.ListModelMixin, mixins.RetrieveModelMixin, generics.GenericAPIView):
+    queryset = User.objects.all()
+    serializer_class = UsersSerializer
+    permission_classes = [IsAdminAndActivated]
+
+    def get(self, request, *args, **kwargs):
+        if kwargs.get('pk'):
+            return self.retrieve(request, *args, **kwargs)
+        else:
+            return self.list(request, *args, **kwargs)
