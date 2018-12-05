@@ -23,7 +23,7 @@ class BaseTestCase(TestCase):
             email="customer@customer.com",
             password="Customer19407#"
         )
-        cls.customer_account = CustomerBankAccount.objects.create(owner=cls.customer)
+        cls.customer_account = CustomerBankAccount.objects.create(owner=cls.customer, balance=1000)
 
         cls.data = {
                 "amount": 1000,
@@ -33,6 +33,7 @@ class BaseTestCase(TestCase):
 
         #URLS
         cls.top_up_url = reverse('transactions:topup')
+        cls.withdraw_url = reverse('transactions:withdraw')
 
     @classmethod
     def tearDownClass(cls):
